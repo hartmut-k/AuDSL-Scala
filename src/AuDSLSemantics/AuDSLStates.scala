@@ -37,7 +37,7 @@ abstract class AuDSLState(val name: String) {
   def replaceChild(oldChild: AuDSLState, newChild: AuDSLState) {
     children -= oldChild; this.addChild(newChild) }
   def addTransition(transition: AuDSLTransition) {transitions += transition}
-  def writeTargets() {this writeTargetsIn(this)}
+  def writeTargets {this writeTargetsIn(this)}
   def writeTargetsIn(aState: AuDSLState) {
     for (t <- transitions) t writeTargetFor(aState)
     for (c <- children) c writeTargetsIn(aState) }

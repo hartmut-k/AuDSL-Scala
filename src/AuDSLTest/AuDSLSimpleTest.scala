@@ -23,11 +23,11 @@ class AuDSLSimpleTest extends FlatSpec with ShouldMatchers with AuDSL {
   state writeTargets;
   state.model_=(this)
 // prepare some application methods
-  def anAction = println("** an Action called")
+  def anAction {println("** an Action called")}
   def aGuard = {println("** aGuard called"); true }
 // do the tests
   "A simple Statechart" should "be constructed hierarchically" in  {
-    state enter; println("** "+state.render())
+    state enter; println("** "+state.render)
     state.at("kidskids") should equal (kidskids)
     state.at("root") should equal (state)}
   it should  "be queried hierarchically" in {
