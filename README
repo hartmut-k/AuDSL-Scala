@@ -37,7 +37,7 @@ Want to know what it looks like? Here is the spezification of the famous micro w
 			(closed
 				open -> open) ) )
 
-Your main program only implements the guards and actions (in sqare brackets)
+Your main program only implements the guards and actions (in square brackets)
 =========================================================================================
 
 march 21, 2012
