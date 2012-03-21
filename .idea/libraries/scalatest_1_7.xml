@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="scalatest-1.7">
+    <CLASSES>
+      <root url="file://$USER_HOME$/scala/scalatest-1.7.1" />
+      <root url="file://$USER_HOME$/scala/scalatest-1.7.1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/scala/scalatest-1.7.1/src/test/java" />
+      <root url="file://$USER_HOME$/scala/scalatest-1.7.1/src/main/java" />
+      <root url="file://$USER_HOME$/scala/scalatest-1.7.1/src/examples/java" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/scala/scalatest-1.7.1" recursive="false" />
+  </library>
+</component>

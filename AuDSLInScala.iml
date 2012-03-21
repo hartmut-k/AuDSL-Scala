@@ -12,14 +12,14 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/AuDSLGrammar" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/AuDSLSemantics" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/AuDSLTest" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/AuDSLSemantics" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/AuDSLGrammar" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="scala-library-2.9.1 (1)" level="application" />
-    <orderEntry type="library" name="scalatest-1.7.1-tests" level="application" />
+    <orderEntry type="library" name="scalatest-1.7" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
 
