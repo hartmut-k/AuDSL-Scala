@@ -15,3 +15,31 @@ The most astonishing fact is its size:
 - the semantic model (from which the DSL text generates the running program) is 180 LOC
 
 Of course there is more test code than operating code (435 LOC), see loc.txt in AuDSLTest
+
+=========================================================================================
+Want to know what it looks like? Here is the spezification of the famous micro wave oven:
+
+  (r: oven
+  	(heater
+			(idle
+				onEntry:		[enableTimeSetting]
+				onExit:  			[disableTimeSetting]
+				start [doorIsClosed ] -> cooking )
+			(cooking
+				onEntry:		[startTimer]
+				onExit: 		[stopTimer]
+				open -> idle
+				finish -> idle ) )
+		(door
+			history
+			(open
+				close -> closed )
+			(closed
+				open -> open) ) )
+
+Your main program only implements the guards and actions (in sqare brackets)
+=========================================================================================
+
+march 21, 2012
+Hartmut Krasemann
+
