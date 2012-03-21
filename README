@@ -14,7 +14,7 @@ The most astonishing fact is its size:
 - the whole grammar plus all glue-to-the-app code is 64 LOC
 - the semantic model (from which the DSL text generates the running program) is 180 LOC
 
-Of course there is more test code than operating code (435 LOC), see loc.txt in AuDSLTest
+Of course there is more test code (435 LOC) than operating code (244 LOC), see loc.txt in AuDSLTest
 
 =========================================================================================
 Want to know what it looks like? Here is the spezification of the famous micro wave oven:
