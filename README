@@ -1,1 +1,17 @@
-This file was created by IntelliJ IDEA 11.0.2 for binding GitHub repository
+AuDSL is a Domain Specific Language for hierarchical state machines "Harel statecharts".
+See OBJEKTspektrum 4/2011 for concepts, overview and description.
+
+The textual AuDSL allows effortless formulation of arbitrary complex machines 
+and allows for a stateless program to simulate or use such a machine.
+
+While the original implementation is in Pharo Smalltalk using PetitParser
+(see squeaksource.com -> AuDSL3 -> DSL for Harel statecharts (Pharo edition) ) 
+this implementation uses scala parser combinators and comes as a Scala Trait.
+
+Thus it can easily be inherited by your Scala class (and that in turn used by your Java program)
+
+The most astonishing fact is its size:
+- the whole grammar plus all glue-to-the-app code is 64 LOC
+- the semantic model (from which the DSL text generates the running program) is 180 LOC
+
+Of course there is more test code than operating code (435 LOC), see loc.txt in AuDSLTest
