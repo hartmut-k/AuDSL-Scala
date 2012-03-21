@@ -17,7 +17,7 @@ The most astonishing fact is its size:
 Of course there is more test code (435 LOC) than operating code (244 LOC), see loc.txt in AuDSLTest
 
 =========================================================================================
-Want to know what it looks like? Here is the specification of the famous micro wave oven:
+Want to know what it looks like? Here is the specification of the ubiquitous micro wave oven:
 
   (r: oven
   	(heater
