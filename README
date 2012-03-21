@@ -21,21 +21,21 @@ Want to know what it looks like? Here is the spezification of the famous micro w
 
   (r: oven
   	(heater
-			(idle
-				onEntry:		[enableTimeSetting]
-				onExit:  			[disableTimeSetting]
-				start [doorIsClosed ] -> cooking )
-			(cooking
-				onEntry:		[startTimer]
-				onExit: 		[stopTimer]
-				open -> idle
-				finish -> idle ) )
-		(door
-			history
-			(open
-				close -> closed )
-			(closed
-				open -> open) ) )
+		(idle
+			onEntry:	[enableTimeSetting]
+			onExit:  	[disableTimeSetting]
+			start [doorIsClosed ] -> cooking )
+		(cooking
+			onEntry:	[startTimer]
+			onExit: 	[stopTimer]
+			open -> idle
+			finish -> idle ) )
+	(door
+		history
+		(open
+			close -> closed )
+		(closed
+			open -> open) ) )
 
 Your main program only implements the guards and actions (in square brackets)
 =========================================================================================
