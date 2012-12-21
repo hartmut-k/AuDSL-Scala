@@ -4,7 +4,7 @@ import AuDSLGrammar._
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
 ** User: hartmut  Date: 14.02.12  Time: 10:35
-** 17.03.2012  160 LOC */
+** 17.03.2012  157 LOC */
 
 abstract class AuDSLState(val name: String) {
   import scala.collection.mutable.Set
@@ -102,21 +102,19 @@ abstract class AuDSLState(val name: String) {
   def rememberHistory {} // default = do nothing
 // printing
   def logFor(aString: String, anEvent: String) {log = log+" *** "+aString+" "+anEvent}
-  def printType: String      // subclass responsibility
-  def toString(indent: Int, all: Boolean): String    // subclass responsibility
   override def toString() = this.toString(false) // print only entered states
-  def toString(all: Boolean):String =  this.printType+this.toString(1, all)+"\n"
   def render: String = "\n"+this.render(0)+"\n"
-  def render(indent: Int): String = {
-    var out =  ""
-    for (x <- 1 to indent) {out = out+"\t"}; out = out+this.printType+this.name+"\n"
-    if (entryActions.size > 0 )
-    {for (x <- 0 to indent) {out = out+"\t"}; out = out+"onEntry:  "+entryActions.toString()+"\n"}
-    if (exitActions.size > 0 )
-    {for (x <- 0 to indent) {out = out+"\t"}; out = out+"onExit:   "+exitActions.toString()+"\n"}
-    for (t <- transitions) {for (x <- 0 to indent) {out = out+"\t"}; out = out+t.toString()+"\n"}
-    for (c <- children) {out = out+c.render(indent+1) }
-    out}
+// private
+  protected def printType: String      // subclass responsibility
+  protected def toString(all: Boolean):String =  this.printType+this.toString(1, all)+"\n"
+  def toString(i: Int, all: Boolean): String    // subclass responsibility
+  protected def render(i: Int): String = {
+    var out = this.tabs(i) + this.printType + this.name
+    for (a <- entryActions) {out += this.tabs(i+1) + "onEntry: " + entryActions.toString}
+    for (a <- exitActions)  {out += this.tabs(i+1) + "onExit:  " + exitActions.toString}
+    for (t <- transitions)  {out += this.tabs(i+1) + t.toString}
+    for (c <- children)     {out += c.render(i+1) } ; out}
+  protected def tabs(indent: Int): String = {var out = "\n"; for (x <- 1 to indent) out += "\t"; out}
 }
 
 class AuDSLXorState(name: String, history: Boolean) extends AuDSLState(name) {
@@ -135,10 +133,10 @@ class AuDSLXorState(name: String, history: Boolean) extends AuDSLState(name) {
     if (!firstChild.isState || this.enteredChild.isState) return
     if (history && historyChild.isState) historyChild enter else firstChild enter }
   override def rememberHistory {if (history) historyChild = this enteredChild }
-// printing
-  def toString(indent: Int, all: Boolean) = {
+// private
+  def toString(i: Int, all: Boolean) = {
     var out = this.name+"."
-    for (c <- children; if (all|c.entered)) out = out+c.toString(indent, all)
+    for (c <- children; if (all|c.entered)) out += c.toString(i, all)
     out }
   def printType = "State: "
 }
@@ -146,11 +144,10 @@ class AuDSLXorState(name: String, history: Boolean) extends AuDSLState(name) {
 class AuDSLRegion(name: String) extends AuDSLState(name) {
 // semantics
   def enterChildren = {for (c <- children) c enter}
-// printing
-  def toString(indent: Int, all: Boolean) = {
+// private
+  def toString(i: Int, all: Boolean) = {
     var out = this.name+"."
-    var ind = "\n" ; for (i <- 1 to indent) ind = ind+"\t"
-    for (c <- children; if (all|c.entered)) out = out+ind+c.toString(indent+1, all)
+    for (c <- children; if (all|c.entered)) out += tabs(i)+c.toString(i+1, all)
     out }
   def printType = "Region: "
 }

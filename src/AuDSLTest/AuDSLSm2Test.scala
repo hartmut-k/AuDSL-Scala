@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
-** User: hartmut  Date: 12.03.12  Time: 20:49 */
+** User: hartmut  Date: 21.12.12  Time: 20:49 */
 
 class AuDSLSm2Test extends FlatSpec with ShouldMatchers with AuDSL {
 // TestMachine2 carries a statemachine with regions, 6 levels deep.
@@ -44,11 +44,11 @@ class AuDSLSm2Test extends FlatSpec with ShouldMatchers with AuDSL {
 			( top1x1x2x2)))
 	""";
 // set up and test the parser
-  var sm: AuDSLState = this.create("statechart2")
-  println(sm render)
+  var sm: AuDSLState = this.create("statechart2", this.statechart2Spec)
 // do the tests
   "Statechart2" should "be parsed from a multi state AuDSL text" in {
     sm.name should equal("world")
+    println(sm render)
   }
   it should "obey the history" in {
     setup; sm.process("aa"); sm.process("c"); sm.process("ee")
@@ -72,7 +72,7 @@ class AuDSLSm2Test extends FlatSpec with ShouldMatchers with AuDSL {
     sm.at("top2x2x2").entered should be(true) // here is history
   }
   it should "multi exit regions" in {
-    sm = this.create("statechart2")   // we need a fresh sm without history track
+    sm = this.create("statechart2", this.statechart2Spec)   // we need a fresh sm without history track
     setup;
     sm.entered should be(true)
     sm.at("top1").entered should be(true)

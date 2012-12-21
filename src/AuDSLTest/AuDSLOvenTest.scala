@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
-** User: hartmut  Date: 10.03.12  Time: 10:56 */
+** User: hartmut  Date: 21.12.12  Time: 10:56 */
 
 class AuDSLOvenTest extends FlatSpec with ShouldMatchers with AuDSL {
   // prepare oven statechart app
@@ -14,7 +14,7 @@ class AuDSLOvenTest extends FlatSpec with ShouldMatchers with AuDSL {
   def stopTimer: Unit = {}
   def doorIsClosed: Boolean = statechartNamed("oven").at("closed").entered
   private def setup {sm.exit; sm.enter}
-  def ovenSpec: String = """
+  def oven: String = """
   (r: oven
 		(heater
 			(idle
@@ -34,11 +34,11 @@ class AuDSLOvenTest extends FlatSpec with ShouldMatchers with AuDSL {
 				open -> open) ) )
   """ ;
 // setup
-  val sm: AuDSLState = this.create("oven")
-  println(sm render)
+  val sm: AuDSLState = this.create("oven", this.oven)
   setup
 // do the tests
   "For the Microwave oven a Statechart" should "parse the oven AuDSL text" in {
+    println(sm render)
     sm.name should equal("oven") }
   it should  "run the demo" in {
     println(sm.toString)

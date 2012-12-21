@@ -5,7 +5,7 @@ import scala.util.parsing.combinator._
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
 ** User: hartmut  Date: 14.02.12  Time: 10:35
-** 17.03.2012  64 LOC */
+** 20.12.2013  62 LOC */
 
 trait AuDSL extends AuDSLParser {
   import scala.collection.mutable.Map
@@ -13,35 +13,33 @@ trait AuDSL extends AuDSLParser {
   def statechartNamed(name: String) = statecharts(name)
   def perform(action: String) {this.getClass.getMethod(action).invoke(this)}
   def test(guard: String) = {this.getClass.getMethod(guard).invoke(this)==true}
-  def create(aStateName: String): AuDSLState = {
-    val m = this.getClass.getMethod(aStateName+"Spec")
-    val spec = m.invoke(this).toString
-    val sm = this.parseAll(AuState, spec) match {
+  def create(aName: String, aDSLtext: String): AuDSLState = {
+    val sm = this.parseAll(AuState, aDSLtext) match {
       case Success(r,_) => r
-      case NoSuccess(msg,input) => sys.error("AuDSL error: "+msg+" at "+input.pos) }
+      case NoSuccess(msg,input) => sys.error("DSL error: "+msg+" at "+input.pos) }
     sm.model_=(this) ;
-    statecharts += (aStateName -> sm)
+    statecharts += (aName -> sm)
     sm }
 }
 
 trait AuDSLParser extends JavaTokenParsers {
-  private def guards: Parser[List[String]]  = opt("["~>rep(ident)<~"]") ^^
+  private def guards: Parser[List[String]]     = opt("["~>rep(ident)<~"]") ^^
     {case Some(g) => g; case None => List()}
-  private def actions: Parser[List[String]] = opt("["~>(rep(ident)<~"]")) ^^
+  private def actions: Parser[List[String]]    = opt("["~>(rep(ident)<~"]")) ^^
     {case Some(a) => a; case None => List()}
   private def transition: Parser[AuDSLTransition] = ident~guards~"->"~ident~actions ^^
     {case event~guards~"->"~target~actions => new AuDSLTransition(target, event, guards, actions)}
-  private def onexit: Parser[List[String]]  = opt("onExit:"~"["~>rep(ident)<~"]") ^^
+  private def onexit: Parser[List[String]]     = opt("onExit:"~>actions) ^^
     {case Some(ex) => ex; case None => List()}
-  private def onentry: Parser[List[String]] = opt("onEntry:"~"["~>rep(ident)<~"]") ^^
+  private def onentry: Parser[List[String]]    = opt("onEntry:"~>actions) ^^
     {case Some(en) => en; case None => List()}
-  private def history: Parser[Boolean] = opt("history") ^^ 
+  private def history: Parser[Boolean]         = opt("history") ^^
     {case Some(h) => true; case None => false}
-  private def xortype: Parser[AuDSLState] = "("~>ident~history ^^ 
+  private def xortype: Parser[AuDSLState]      = "("~>ident~history ^^
     {case i~h => new AuDSLXorState(i,h)}
-  private def regiontype: Parser[AuDSLState] = "(r:"~>ident ^^ 
+  private def regiontype: Parser[AuDSLState]   = "(r:"~>ident ^^
     (new AuDSLRegion(_))
-  private def transitions: Parser[List[AuDSLTransition]] =  opt(rep(transition)) ^^
+  private def transitions: Parser[List[AuDSLTransition]] = opt(rep(transition)) ^^
     {case Some(ts) => ts; case None => List()}
   private def states: Parser[List[AuDSLState]] =  opt(rep(state)) ^^
     {case Some(ss) => ss; case None => List()}
@@ -53,7 +51,7 @@ trait AuDSLParser extends JavaTokenParsers {
       s.exitActions ++= ex
       s }
   def AuState: Parser[AuDSLState] = rep(state) ^^
-    {case head::tail =>
+    {case head::tail =>    // Kein Zustand darf nach seiner Spec zitiert werden !
       {for (t <- tail) {
         val tbR = head.at(t.name)
         tbR.elder.replaceChild(tbR, t)}}

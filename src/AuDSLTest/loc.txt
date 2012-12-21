@@ -1,8 +1,9 @@
 hartmut-24-imac:AuDSLTest hartmut$ wc -l *
+      35 AuDSLRawGrammarTest.scala
       18 AuDSLEmptySmTest.scala
       51 AuDSLOvenTest.scala
       45 AuDSLSimpleTest.scala
      159 AuDSLSm1Test.scala
       98 AuDSLSm2Test.scala
       64 AuDSLSm3Test.scala
-     435 total
+     470 total

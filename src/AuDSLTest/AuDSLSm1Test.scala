@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
-** User: hartmut  Date: 10.03.12  Time: 11:10 */
+** User: hartmut  Date: 21.12.12  Time: 11:10 */
 
 class AuDSLSm1Test extends FlatSpec with ShouldMatchers with AuDSL {
 // prepare oven statechart app
@@ -51,11 +51,11 @@ class AuDSLSm1Test extends FlatSpec with ShouldMatchers with AuDSL {
 					ff -> top1x2))))
 	""" ;
 // set up and test the parser
-  val sm: AuDSLState = this.create("statechart1")
-  println(sm render)
+  val sm: AuDSLState = this.create("statechart1", this.statechart1Spec)
 // do the tests
   "Statechart1" should "be parsed from AuDSL text" in {
     sm.name should equal("root")
+    println(sm render)
   }
   it should  "do a simple transition" in  {
     setup

@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 /* DR. HARTMUT KRASEMANN, IT-ARCHITEKT
-** User: hartmut  Date: 17.03.12  Time: 18:42 */
+** User: hartmut  Date: 21.12.12  Time: 18:42 */
 
 class AuDSLSm3Test extends FlatSpec with ShouldMatchers with AuDSL {
   // TestMachine3
@@ -48,13 +48,13 @@ class AuDSLSm3Test extends FlatSpec with ShouldMatchers with AuDSL {
 	""";
   // test the target error
   "Statechart3" should "detect target errors" in {
-    val thrown = evaluating {this.create("statechart3")} should produce [RuntimeException]
+    val thrown = evaluating {this.create("statechart3", this.statechart3Spec)} should produce [RuntimeException]
     thrown.getMessage should include ("is unknown")
     thrown.getMessage should include ("wrong1")
     thrown.getMessage should include ("wrong2")
   }
   "Statechart3" should "detect transition errors" in {
-    val thrown = evaluating {this.create("statechart3")} should produce [RuntimeException]
+    val thrown = evaluating {this.create("statechart3", this.statechart3Spec)} should produce [RuntimeException]
     thrown.getMessage should include ("is illegal")
     thrown.getMessage should include ("gg")
     thrown.getMessage should include ("bb")
