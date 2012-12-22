@@ -1,0 +1,63 @@
+AuDSL is a Domain Specific Language for hierarchical state machines "Harel statecharts".
+See OBJEKTspektrum 4/2011 for concepts, overview and description.
+
+The textual AuDSL allows effortless formulation of arbitrary complex machines 
+and allows for a stateless program to simulate or use such a machine.
+
+While the original implementation is in Pharo Smalltalk using PetitParser
+(see squeaksource.com -> AuDSL3 -> DSL for Harel statecharts (Pharo edition) ) 
+this implementation uses scala parser combinators and comes as a Scala Trait.
+
+Thus it can easily be inherited by your Scala class (and that in turn used by your Java program)
+
+The most astonishing fact is its size:
+- the whole grammar plus all glue-to-the-app code is 64 LOC
+- the semantic model (from which the DSL text generates the running program) is 180 LOC
+
+Of course there is more test code (435 LOC) than operating code (244 LOC), see loc.txt in AuDSLTest
+
+=========================================================================================
+Want to know what it looks like? Here is the specification of the ubiquitous micro wave oven:
+
+  (r: oven
+    (heater
+		(idle
+			onEntry:	[enableTimeSetting]
+			onExit:  	[disableTimeSetting]
+			start [doorIsClosed ] -> cooking )
+		(cooking
+			onEntry:	[startTimer]
+			onExit: 	[stopTimer]
+			open -> idle
+			finish -> idle ) )
+	(door
+		history
+		(open
+			close -> closed )
+		(closed
+			open -> open) ) )
+
+Your main program only implements the guards and actions (in square brackets), 
+for an example see AuDSLOvenTest.scala in package AuDSLTest
+=========================================================================================
+
+march  2012, 
+Hartmut Krasemann
+
+under MIT-License:
+
+Copyright (c) <2012> <Hartmut Krasemann>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+software and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following 
+conditions:
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
